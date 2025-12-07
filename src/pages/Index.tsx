@@ -1,11 +1,28 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const Index = () => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -25,7 +42,7 @@ const Index = () => {
             <a href="#blog" className="text-sm font-medium hover:text-primary transition-colors">Блог</a>
             <a href="#contact" className="text-sm font-medium hover:text-primary transition-colors">Контакты</a>
           </nav>
-          <Button className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
+          <Button onClick={() => setIsDialogOpen(true)} className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
             Записаться
           </Button>
         </div>
@@ -48,7 +65,7 @@ const Index = () => {
                 Художник-самоучка с многолетним опытом создания портретов научит вас базовым основам и профессиональным техникам. Удобный онлайн-формат в любое время.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Button size="lg" className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
+                <Button onClick={() => setIsDialogOpen(true)} size="lg" className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
                   <Icon name="Sparkles" className="mr-2 h-5 w-5" />
                   Начать обучение
                 </Button>
@@ -184,7 +201,7 @@ const Index = () => {
                       </li>
                     ))}
                   </ul>
-                  <Button className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
+                  <Button onClick={() => setIsDialogOpen(true)} className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
                     Узнать подробнее
                   </Button>
                 </CardContent>
@@ -259,7 +276,7 @@ const Index = () => {
                   </div>
                 ))}
               </div>
-              <Button size="lg" className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
+              <Button onClick={() => setIsDialogOpen(true)} size="lg" className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
                 <Icon name="Rocket" className="mr-2 h-5 w-5" />
                 Начать обучение
               </Button>
@@ -295,7 +312,7 @@ const Index = () => {
                       </span>
                       <span className="text-muted-foreground line-through">7 990₽</span>
                     </div>
-                    <Button className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
+                    <Button onClick={() => setIsDialogOpen(true)} className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
                       Купить курс
                     </Button>
                   </div>
@@ -554,6 +571,72 @@ const Index = () => {
           </div>
         </div>
       </footer>
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              Записаться на обучение
+            </DialogTitle>
+            <DialogDescription>
+              Заполните форму, и я свяжусь с вами для обсуждения деталей
+            </DialogDescription>
+          </DialogHeader>
+          <form className="space-y-4 mt-4">
+            <div className="space-y-2">
+              <Label htmlFor="name">Имя *</Label>
+              <Input id="name" placeholder="Ваше имя" required />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email">Email *</Label>
+              <Input id="email" type="email" placeholder="your@email.com" required />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="phone">Телефон *</Label>
+              <Input id="phone" type="tel" placeholder="+7 (999) 123-45-67" required />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="course">Выберите курс *</Label>
+              <Select>
+                <SelectTrigger id="course">
+                  <SelectValue placeholder="Выберите курс" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="portrait">Портрет на заказ</SelectItem>
+                  <SelectItem value="basic">Базовый курс</SelectItem>
+                  <SelectItem value="advanced">Продвинутый курс</SelectItem>
+                  <SelectItem value="consultation">Консультация</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="message">Сообщение</Label>
+              <Textarea 
+                id="message" 
+                placeholder="Расскажите о своих целях и опыте рисования..." 
+                rows={3}
+              />
+            </div>
+            <div className="flex gap-3 pt-4">
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={() => setIsDialogOpen(false)}
+                className="flex-1"
+              >
+                Отмена
+              </Button>
+              <Button 
+                type="submit" 
+                className="flex-1 bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity"
+              >
+                <Icon name="Send" className="mr-2 h-4 w-4" />
+                Отправить
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
