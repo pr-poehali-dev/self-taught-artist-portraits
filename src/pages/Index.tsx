@@ -21,10 +21,28 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 const Index = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { toast } = useToast();
+
+  const menuItems = [
+    { href: "#about", label: "О школе" },
+    { href: "#services", label: "Услуги" },
+    { href: "#portfolio", label: "Портфолио" },
+    { href: "#learning", label: "Обучение" },
+    { href: "#reviews", label: "Отзывы" },
+    { href: "#blog", label: "Блог" },
+    { href: "#contact", label: "Контакты" },
+  ];
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -36,17 +54,59 @@ const Index = () => {
             </span>
           </div>
           <nav className="hidden md:flex items-center gap-6">
-            <a href="#about" className="text-sm font-medium hover:text-primary transition-colors">О школе</a>
-            <a href="#services" className="text-sm font-medium hover:text-primary transition-colors">Услуги</a>
-            <a href="#portfolio" className="text-sm font-medium hover:text-primary transition-colors">Портфолио</a>
-            <a href="#learning" className="text-sm font-medium hover:text-primary transition-colors">Обучение</a>
-            <a href="#reviews" className="text-sm font-medium hover:text-primary transition-colors">Отзывы</a>
-            <a href="#blog" className="text-sm font-medium hover:text-primary transition-colors">Блог</a>
-            <a href="#contact" className="text-sm font-medium hover:text-primary transition-colors">Контакты</a>
+            {menuItems.map((item) => (
+              <a key={item.href} href={item.href} className="text-sm font-medium hover:text-primary transition-colors">
+                {item.label}
+              </a>
+            ))}
           </nav>
-          <Button onClick={() => setIsDialogOpen(true)} className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
-            Записаться
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button onClick={() => setIsDialogOpen(true)} className="hidden sm:flex bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
+              Записаться
+            </Button>
+            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="md:hidden">
+                  <Icon name="Menu" className="h-6 w-6" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                <SheetHeader>
+                  <SheetTitle>
+                    <div className="flex items-center gap-2">
+                      <Icon name="Palette" className="h-6 w-6 text-primary" />
+                      <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                        Меню
+                      </span>
+                    </div>
+                  </SheetTitle>
+                </SheetHeader>
+                <nav className="flex flex-col gap-4 mt-8">
+                  {menuItems.map((item) => (
+                    <a
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-primary/10 transition-colors group"
+                    >
+                      <Icon name="ChevronRight" className="h-5 w-5 text-primary group-hover:translate-x-1 transition-transform" />
+                      <span className="text-base font-medium">{item.label}</span>
+                    </a>
+                  ))}
+                  <Button 
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      setIsDialogOpen(true);
+                    }} 
+                    className="mt-4 bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity"
+                  >
+                    <Icon name="Sparkles" className="mr-2 h-5 w-5" />
+                    Записаться на курс
+                  </Button>
+                </nav>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </header>
 
