@@ -20,9 +20,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { toast } = useToast();
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -582,7 +584,15 @@ const Index = () => {
               Заполните форму, и я свяжусь с вами для обсуждения деталей
             </DialogDescription>
           </DialogHeader>
-          <form className="space-y-4 mt-4">
+          <form className="space-y-4 mt-4" onSubmit={(e) => {
+            e.preventDefault();
+            setIsDialogOpen(false);
+            toast({
+              title: "Заявка отправлена! 🎨",
+              description: "Спасибо за интерес! Я свяжусь с вами в ближайшее время для обсуждения деталей обучения.",
+              duration: 5000,
+            });
+          }}>
             <div className="space-y-2">
               <Label htmlFor="name">Имя *</Label>
               <Input id="name" placeholder="Ваше имя" required />
